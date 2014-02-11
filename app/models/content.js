@@ -130,8 +130,70 @@ ContentSchema.methods = {
 				self.save(done);
 			});
 		})
+	},
 
+	updateSirTrevor: function(sirTrevorData, done){
+		var 
+			self = this;
 
+		function getRemovedImages(sirTrevorData){
+			var removedImages = [];
+			_.each(self.sirTrevorData, function(item){
+				if ((item.type == 'image') && !_.contains(sirTrevorData, item)) {
+					removedImages.push(item);
+				}
+			})
+			return removedImages;
+		}
+
+		function getAddedImages(sirTrevorData){
+			var addedImages = [];
+			_.each(sirTrevorData, function(item){
+				if ((item.type == 'image') && !_.contains(self.sirTrevorData, item)) {
+					addedImages.push(item);
+				}
+			})
+			return addedImages;
+		}
+
+		console.log('current sirTrevor\n', self.sirTrevorData);
+		console.log('new sirTrevor\n', sirTrevorData);
+		console.log('to remove\n', getRemovedImages(sirTrevorData));
+		console.log('to add\n', getAddedImages(sirTrevorData));
+
+		async.parallel([
+			function(callback){
+				async.each(getRemovedImages(sirTrevorData), function(item, cb){
+					mongoose.model('Image').findById(item.data._id).remove(cb)					
+				}, callback)
+			},
+			function(callback){
+				async.each(getAddedImages(sirTrevorData), function(item, cb){
+					mongoose.model('Image').findById(item.data._id, function(err, img){
+						if (err) cb(err)
+						else {
+							// set reference to this content
+							img.content = self;
+							img.save(cb);
+						}
+					})					
+				}, callback)
+			}
+		], done);
+	},
+
+	removeImageAndSave: function(imageId, done) {
+
+		async.each(this.sirTrevorData, function(item, done){
+			console.log('item '+item);
+			if ((item.type == 'image') && (item.data._id == imageId)) {
+				self.sirTrevorData.pull(item);
+			}
+			done();			
+		}, function(err){
+			if (err) done(err);
+			else self.save(done);
+		});
 	}
 }
 
