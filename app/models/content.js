@@ -49,47 +49,6 @@ ContentSchema.pre('remove', function(next){
 });
 
 /**
- * Statics
- */
-
-ContentSchema.statics = {
-
-	/**
-	 * Find Content by id
-	 *
-	 * @param {ObjectId} id
-	 * @param {Function} cb
-	 * @api private
-	 */
-
-	load: function (id, cb) {
-		this.findOne({ _id : id })
-			.populate('layer')
-			.populate('features')
-			.exec(cb)
-	},
-	
-	/**
-	 * List Contents
-	 *
-	 * @param {Object} options
-	 * @param {Function} cb
-	 * @api private
-	 */
-
-	list: function (options, cb) {
-		var criteria = options.criteria || {}
-
-		this.find(criteria)
-			.sort({'createdAt': -1}) // sort by date
-			.limit(options.perPage)
-			.skip(options.perPage * options.page)
-		.exec(cb)
-	}	
-	
-}
-
-/**
  * Methods
  */
 
@@ -111,31 +70,36 @@ ContentSchema.methods = {
 			currentFeatures = this.features,
 			self = this;
 
-		async.each(this.features, function(ftId, cb){
-			mongoose.model('Feature').findById(ftId, function(err,ft){
-				ft.contents.pull(self._id);
-				ft.save(cb);
-			})
-		}, 
-		function(err){
-			if (err) done(err);
-			async.each(featureSet, function(newFtId, cb){
-				mongoose.model('Feature').findById(newFtId, function(err, newFt){
-					newFt.contents.addToSet(self._id);
-					newFt.save(cb);
+		if (!featureSet) done();
+		else {
+			async.each(this.features, function(ftId, cb){
+				mongoose.model('Feature').findById(ftId, function(err,ft){
+					ft.contents.pull(self._id);
+					ft.save(cb);
 				})
-			}, function(err){
+			}, 
+			function(err){
 				if (err) done(err);
-				self.features = featureSet;
-				self.save(done);
+				async.each(featureSet, function(newFtId, cb){
+					mongoose.model('Feature').findById(newFtId, function(err, newFt){
+						newFt.contents.addToSet(self._id);
+						newFt.save(cb);
+					})
+				}, function(err){
+					if (err) done(err);
+					self.features = featureSet;
+					self.save(done);
+				});
 			});
-		})
+		}
 	},
 
 	updateSirTrevor: function(sirTrevorData, done){
 		var 
-			self = this;
-
+			self = this,
+			imagesToRemove,
+			imagesToAdd;
+		
 		function getRemovedImages(sirTrevorData){
 			var removedImages = [];
 			_.each(self.sirTrevorData, function(item){
@@ -155,38 +119,49 @@ ContentSchema.methods = {
 			})
 			return addedImages;
 		}
-
-		console.log('current sirTrevor\n', self.sirTrevorData);
-		console.log('new sirTrevor\n', sirTrevorData);
-		console.log('to remove\n', getRemovedImages(sirTrevorData));
-		console.log('to add\n', getAddedImages(sirTrevorData));
-
+		
+		imagesToRemove = getRemovedImages(sirTrevorData);
+		imagesToAdd = getAddedImages(sirTrevorData);
+		
 		async.parallel([
 			function(callback){
-				async.each(getRemovedImages(sirTrevorData), function(item, cb){
-					mongoose.model('Image').findById(item.data._id).remove(cb)					
-				}, callback)
+				if (!imagesToRemove) 
+					callback();
+				else
+					async.each(imagesToRemove, function(item, cb){
+						mongoose.model('Image').findById(item.data._id).remove(cb)
+					}, callback);
 			},
 			function(callback){
-				async.each(getAddedImages(sirTrevorData), function(item, cb){
-					mongoose.model('Image').findById(item.data._id, function(err, img){
-						if (err) cb(err)
-						else {
-							// set reference to this content
-							img.content = self;
-							img.save(cb);
-						}
-					})					
+				if (!imagesToAdd) 
+					callback();
+				else
+					async.each(imagesToAdd, function(item, cb){
+						mongoose.model('Image').findById(item.data._id, function(err, img){
+							if (err) {
+								cb(err);
+							}
+							else {
+								// set reference to this content
+								img.content = self;
+								img.save(cb);
+							}
+						});
 				}, callback)
 			}
-		], done);
+		], function(){
+			self.sirTrevorData = sirTrevorData;
+			done(self);
+		});
 	},
 
 	removeImageAndSave: function(imageId, done) {
 
-		async.each(this.sirTrevorData, function(item, done){
-			console.log('item '+item);
-			if ((item.type == 'image') && (item.data._id == imageId)) {
+		var self = this;
+
+		async.each(self.sirTrevorData, function(item, done){
+			// if image exists in sirTrevor, remove it
+			if ((item.type == 'image') && (item.data._id.toHexString() == imageId.toHexString())) {
 				self.sirTrevorData.pull(item);
 			}
 			done();			
@@ -195,6 +170,31 @@ ContentSchema.methods = {
 			else self.save(done);
 		});
 	}
+}
+
+/**
+ * Statics
+ */
+
+ContentSchema.statics = {
+
+	load: function (id, cb) {
+		this.findOne({ _id : id })
+			.populate('layer')
+			.populate('features')
+			.exec(cb)
+	},
+	
+	list: function (options, cb) {
+		var criteria = options.criteria || {}
+
+		this.find(criteria)
+			.sort({'createdAt': -1}) // sort by date
+			.limit(options.perPage)
+			.skip(options.perPage * options.page)
+		.exec(cb)
+	}	
+	
 }
 
 mongoose.model('Content', ContentSchema)

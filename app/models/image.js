@@ -15,7 +15,7 @@ var mongoose = require('mongoose'),
 
 var ImageSchema = new Schema({
 	creator: {type: Schema.ObjectId, ref: 'User'},
-	content: {type: Schema.ObjectId, ref: 'content'},
+	content: {type: Schema.ObjectId, ref: 'Content'},
 	uploadedAt: {type: Date, default: Date.now},
 	file: {
 		name: String,
@@ -31,11 +31,14 @@ ImageSchema.pre('remove', function(next){
 	var self = this;
 
 	imager.remove([self.file.name], function(err){
-		if (self.content) 
-			self.content.removeImageAndSave(self._id, next);
-		else
+		if ((!err) && (self.content)) {
+			mongoose.model('Content').findById(self.content, function(err, ct){
+				ct.removeImageAndSave(self._id, next);
+			});
+		}
+		else 
 			next(err);
-	}, 'items');
+	}, 'img');
 });
 
 /**
@@ -55,7 +58,7 @@ ImageSchema.methods = {
 				self.file.url = baseUrl + self.file.name;
 				self.save(done);
 			}
-		}, 'items');
+		}, 'img');
 	}
 }
 
