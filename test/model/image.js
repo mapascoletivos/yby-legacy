@@ -15,7 +15,7 @@ var
 	apiPrefix = '/api/v1',
 	imageFile = 'fixtures/ecolab.png';
 
-describe('Image controller', function(){
+describe('Image model', function(){
 	var
 		user,
 		layer,

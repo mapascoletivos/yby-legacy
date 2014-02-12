@@ -29,7 +29,6 @@ var ImageSchema = new Schema({
 
 ImageSchema.pre('remove', function(next){
 	var self = this;
-
 	imager.remove([self.file.name], function(err){
 		if ((!err) && (self.content)) {
 			mongoose.model('Content').findById(self.content, function(err, ct){
