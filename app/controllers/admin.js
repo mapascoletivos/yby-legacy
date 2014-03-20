@@ -16,7 +16,9 @@ exports.index = function (req, res, next) {
 
 	if (req.user) {
 		if (req.user.isAdmin) {
-			res.render('admin/index');
+			res.render('admin/index', {
+				
+			});
 		} else {
 			// Access not allowed, send user to home
 			res.redirect('/');
