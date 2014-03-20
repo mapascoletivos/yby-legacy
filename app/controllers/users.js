@@ -207,32 +207,46 @@ exports.create = function (req, res) {
 		user.needsEmailConfirmation = false;
 	}
 
+	var initUser = function (user){
+		user.save(function (err) {
+			if (err) {
+				return res.render('users/signup', {
+					errors: utils.errorMessagesFlash(err.errors),
+					user: user
+				});
+			}
 
-	user.save(function (err) {
-		if (err) {
-			// req.flash('error', utils.errorMessagesFlash(err.errors));
-			return res.render('users/signup', {
-				errors: utils.errorMessagesFlash(err.errors),
-				user: user
-			});
-		}
+			req.flash('error', 'Usuário criado com sucesso.')
 
-		// Don't send email if user is active
-		if (!user.needsEmailConfirmation) {
-			return res.redirect('/login');
-		} else {
-			mailer.welcome(user, function(err){
-				if (err) {
-					req.flash('error', 'Erro ao enviar o e-mail de ativação.');
-				}
-				else {
-					req.flash('info', 'Um link de ativação de usuário foi enviado para seu e-mail.');
-				}
+			// Don't send email if user is active
+			if (!user.needsEmailConfirmation) {
 				return res.redirect('/login');
-			});	
+			} else {
+				mailer.welcome(user, function(err){
+					if (err) {
+						req.flash('error', 'Erro ao enviar o e-mail de ativação.');
+					}
+					else {
+						req.flash('info', 'Um link de ativação de usuário foi enviado para seu e-mail.');
+					}
+					return res.redirect('/login');
+				});	
+			}
+		});
+	}
+
+
+	User.count({isAdmin: true}, function(err, count){
+		if (err){ 
+			req.flash('error', 'Houve um erro buscando usuários adminstradores');
+			res.redirect('/login');
 		}
-		
-		
+		else {
+			if (count == 0) 
+				user.isAdmin = true;
+			initUser(user);
+		}
+
 	})
 }
 

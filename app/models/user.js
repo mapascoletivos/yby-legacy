@@ -17,10 +17,11 @@ var UserSchema = new Schema({
 	name: { type: String, default: '' },
 	email: { type: String, default: '' },
 	username: String,
+	isAdmin: {type: Boolean, default: false},
+	needsEmailConfirmation: {type: Boolean, default: true},	
 	hashed_password: { type: String, default: '' },
 	logins: Number,
 	lastLogin: Date,
-	updatedAt: Date,
 	localization: String,
 	bio: {type: String, default: '' },
 	web: String,
@@ -28,9 +29,9 @@ var UserSchema = new Schema({
 	salt: { type: String, default: '' },
 	layers: [{type: Schema.ObjectId, ref: 'Layer'}],
 	authToken: { type: String, default: '' }, 
-	needsEmailConfirmation: {type: Boolean, default: true},	
 	facebook: {},
 	google: {},
+	updatedAt: Date,
 	oldId: Number // to store id used in old Mapas Coletivos
 });
 

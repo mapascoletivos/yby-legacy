@@ -49,6 +49,7 @@ module.exports = function (passport, config) {
 					});				
 				} else if (user.needsEmailConfirmation) {
 					mailer.welcome(user, function(err){
+						console.log(err);
 						if (err)
 							return done(null, false, { message: 'Erro ao enviar e-mail de ativação, por favor, contate o suporte.' });
 						else
