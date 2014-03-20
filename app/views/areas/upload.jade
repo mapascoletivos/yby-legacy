@@ -1,0 +1,35 @@
+doctype html
+html
+	body.landing
+		header#mast-header.row
+			nav(class="navbar" role="navigation")
+				.container
+					.five.columns
+						- if (shapefiles.length)
+							table
+								thead
+									tr
+										th Filename
+										th Type
+										th Area name
+										th Area description
+								tbody
+									- each shapefile in shapefiles
+										tr
+											td=shapefile.filename
+											td=shapefile.type
+											td 
+												select 
+													- each property in shapefile.properties
+														option(property) #{property}
+											td 
+												select 
+													- each property in shapefile.properties
+														option(property) #{property}
+											td
+												input.btn.btn-primary(type='submit' value="Import areas")
+
+						form(action="areas", method="post", role="form", enctype="multipart/form-data")
+							input(type="file", name="shapefile")
+
+							input.btn.btn-primary(type='submit' value="Enviar")

@@ -18,6 +18,7 @@ node_modules
 
 data/
 public/uploads/images/
+public/uploads/shapefiles/
 public/vendor.js
 public/app.js
 public/css/app.css

@@ -18,6 +18,7 @@ var
 	features = require('features'),
 	contents = require('contents'),
 	images = require('images'),
+	areas = require('areas'),
 	importMC = require('importMC'),
 	auth = require('./middlewares/authorization');
 
@@ -30,6 +31,7 @@ module.exports = function (app, passport) {
 	var apiPrefix = '/api/v1';
 
 	app.get('/', home.index);
+
 
 	/*
 	 * Institutional routes
@@ -171,6 +173,13 @@ module.exports = function (app, passport) {
 	app.del(apiPrefix + '/features/:featureId/contents/:contentId', auth.requiresLogin, features.removeContent);
 
 	app.get('/import', importMC.import);
+
+	/**
+	 * Areas routes
+	 */
+
+	app.get('/areas/shapefiles', areas.shapefiles);  // TODO Remove this route. It should be handled in admin area
+	app.post('/areas', areas.upload);
 
 	/*
 	 * All other routes enabled for Angular app (no 404)
