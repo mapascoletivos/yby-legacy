@@ -68,7 +68,7 @@
 		"uglify-js": "latest"
 	},
 	"devDependencies": {
-		"watchify": "latest",
+		"watchify": "0.6.2",
 		"nodemon": "latest",
 		"mocha": "latest",
 		"should": "latest",
