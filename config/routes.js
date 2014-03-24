@@ -176,7 +176,14 @@ module.exports = function (app, passport) {
 	/**
 	 * Admin routes
 	 */
-	 app.get('/admin', admin.index);
+	app.get('/admin', admin.index);
+
+	app.get('/admin/settings', admin.settings);
+	app.get('/admin/settings/privacy', admin.privacy);
+
+	app.get('/admin/users', admin.users);
+	app.get('/admin/users/new', admin.newUser);
+	app.get('/admin/users/permissions', admin.permissions);
 
 	/*
 	 * All other routes enabled for Angular app (no 404)

@@ -1,0 +1,35 @@
+extends ../../layouts/admin-area
+
+block content
+	section#dashboard
+		p Cadastro de novo usuário
+
+		table.form
+			tr
+				td.label
+					label(for="user_fullname") Nome completo
+				td.input
+					input(id="user_fullname" type="text")
+			tr
+				td.label
+					label(for="user_email") Email
+				td.input
+					input(id="user_email" type="text")
+			tr
+				td.label
+					label(for="user_name") Nome de usuário
+				td.input
+					input(id="user_name" type="text")
+			tr
+				td.label
+					label(for="user_profile") Biografia
+				td.input
+					textarea(id="user_profile" rows="5")
+			tr
+				td.label
+					label(for="user_role") Nível de usuário
+				td.input
+					select(id="user_profile")
+						option Colaborador
+						option Editor
+						option Administrador

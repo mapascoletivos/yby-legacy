@@ -1,0 +1,27 @@
+extends ../../layouts/admin-area
+
+block content
+	section#dashboard
+		p Defina os recursos disponíveis para usuários cadastrados.
+
+		table.form
+			tr
+				td.label
+					label Permitir cadastro de usuários
+				td.input
+					input(type="checkbox")
+			tr
+				td.label
+					label Usuários podem cadastrar camadas ou mapas
+				td.input
+					input(type="checkbox")
+			tr
+				td.label
+					label Usuários podem colaborar em camadas públicas
+				td.input
+					input(type="checkbox")
+			tr
+				td.label
+					label Usuários podem utilizar a ferramenta de importação de dados
+				td.input
+					input(type="checkbox")
