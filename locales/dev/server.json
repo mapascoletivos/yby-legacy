@@ -1,0 +1,8 @@
+{
+    "about": "about",
+    "route": {
+        "about": "about",
+        "tutorial": "tutorial",
+        "terms-of-use": "terms-of-use"
+    }
+}

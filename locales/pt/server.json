@@ -1,0 +1,8 @@
+{
+	"about": "sobre",
+    "route": {
+        "about": "sobre",
+        "tutorial": "tutorial",
+        "terms-of-use": "termos-de-uso"        
+    }
+}

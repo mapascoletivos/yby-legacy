@@ -61,6 +61,7 @@ exports.index = function (req, res) {
 }
 
 exports.about = function(req, res) {
+	console.log('entrou no about mesmo');
 	res.render('home/about');
 }
 

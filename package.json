@@ -73,7 +73,8 @@
 		"grvtr": "latest",
 		"napa": "latest",
 		"browserify": "latest",
-		"uglify-js": "latest"
+		"uglify-js": "latest",
+		"i18next": "latest"
 	},
 	"devDependencies": {
 		"watchify": "latest",

@@ -1,7 +1,7 @@
 
-/*!
-* Module dependencies.
-*/
+/**
+  * Module dependencies.
+  */
 
 var   
 	path = require('path'),
@@ -30,6 +30,14 @@ var
 			clientSecret: process.env.GOOGLE_CLIENT_SECRET || 'APP_SECRET',
 			callbackURL: app_url + "/auth/google/callback"
 		}	
+	},
+	i18n = {
+		lng: 'pt',
+		preload: ['pt'],
+		ns: { namespaces: ['server', 'client'], defaultNs: 'server'},
+		saveMissing: true,
+		debug: true,
+		ignoreRoutes: ['public/', 'api/']
 	}
 
 /**
@@ -42,20 +50,23 @@ module.exports = {
 		appUrl: 'http://localhost:3000',
 		nodemailer: nodemailer,
 		db: 'mongodb://localhost/mapascoletivos_dev',
-		oauth: oauth
+		oauth: oauth,
+		i18n: i18n
 	},
 	test: {
 		root: rootPath,
 		appUrl: 'http://localhost:3000',
 		db: 'mongodb://localhost/mapascoletivos_test',
 		nodemailer: nodemailer,
-		oauth: oauth
+		oauth: oauth,
+		i18n: i18n
 	},
 	production: {
 		root: rootPath,
 		appUrl: app_url,
 		db: process.env.MONGOLAB_URI || 'mongodb://localhost/mapascoletivos_production',
 		nodemailer: nodemailer,
-		oauth: oauth
+		oauth: oauth,
+		i18n: i18n
 	}
 }

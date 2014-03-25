@@ -9,6 +9,7 @@ var lessMiddleware = require('less-middleware')
 var pkg = require('../package')
 var flash = require('connect-flash')
 var env = process.env.NODE_ENV || 'development'
+var i18n = require('i18next')
 
 
 /*!
@@ -64,6 +65,11 @@ module.exports = function (app, config, passport) {
         collection : 'sessions'
       })
     }))
+
+    // i18n
+    i18n.init(config.i18n);
+
+    app.use(i18n.handle);
 
     // Passport session
     app.use(passport.initialize())
