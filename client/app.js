@@ -30,6 +30,7 @@ require('./common/mapView');
  */
 
 require('./user/app');
+require('./import/app');
 require('./feature/app');
 require('./content/app');
 require('./layer/app');
@@ -46,10 +47,12 @@ var settings = angular.extend({
 angular.module('mapasColetivos', [
 	'ui.router',
 	'ui.keypress',
+	'ui.slider',
 	'monospaced.elastic',
 	'ngRoute',
 	'ngAnimate',
 	'infinite-scroll',
+	'colorpicker.module',
 	'mapasColetivos.mapView',
 	'mapasColetivos.user',
 	'mapasColetivos.pageTitle',
@@ -60,6 +63,7 @@ angular.module('mapasColetivos', [
 	'mapasColetivos.explore',
 	'mapasColetivos.loadingStatus',
 	'mapasColetivos.messageStatus',
+	'mapasColetivos.dataImport',
 	'mapasColetivos.map',
 	'mapasColetivos.layer',
 	'mapasColetivos.feature',

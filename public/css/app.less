@@ -1,3 +1,39 @@
+/* MC FEATURES */
+
+@font-face {
+	font-family: 'mc-features';
+	src:url('../font/mc-features.eot?-qtuckt');
+	src:url('../font/mc-features.eot?#iefix-qtuckt') format('embedded-opentype'),
+		url('../font/mc-features.woff?-qtuckt') format('woff'),
+		url('../font/mc-features.ttf?-qtuckt') format('truetype'),
+		url('../font/mc-features.svg?-qtuckt#mc-features') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+
+.mcf, .mcf-icon:before {
+	font-family: 'mc-features';
+	-webkit-text-rendering: optimizeLegibility;
+	-moz-text-rendering: optimizeLegibility;
+	-ms-text-rendering: optimizeLegibility;
+	-o-text-rendering: optimizeLegibility;
+	text-rendering: optimizeLegibility;
+	-webkit-font-smoothing: antialiased;
+	-moz-font-smoothing: antialiased;
+	-ms-font-smoothing: antialiased;
+	-o-font-smoothing: antialiased;
+	font-smoothing: antialiased;
+}
+
+.mcf-marker {
+	content: "\e600";
+}
+.mcf-polygon {
+	content: "\e602";
+}
+.mcf-line {
+	content: "\e601";
+}
 
 /* LIGATURE SYMBOLS */
 
@@ -25,6 +61,7 @@
   -ms-font-smoothing: antialiased;
   -o-font-smoothing: antialiased;
   font-smoothing: antialiased;
+  font-weight: 200 !important;
 }
 
 .lsf-icon:before {
@@ -141,7 +178,7 @@ input[type=submit] {
 	line-height: 100%;
 	border: 0;
 	cursor: pointer;
-	font-weight: 600;
+	font-weight: 200;
 	&.button-small {
 		font-size: 90%;
 		padding: 12px 15px;
@@ -165,6 +202,40 @@ input[type=submit] {
 	}
 	&:hover {
 		background: @light-green;
+	}
+}
+
+.dropdown-menu {
+	position: absolute;
+	top: 100%;
+	left: 0;
+	z-index: 1000;
+	display: none;
+	float: left;
+	min-width: 160px;
+	padding: 5px 0;
+	margin: 2px 0 0;
+	font-size: 14px;
+	list-style: none;
+	background-color: #fff;
+	border: 1px solid #ccc;
+	border: 1px solid rgba(0,0,0,0.15);
+	-webkit-box-shadow: 0 6px 12px rgba(0,0,0,0.175);
+	box-shadow: 0 6px 12px rgba(0,0,0,0.175);
+	background-clip: padding-box;
+	.close {
+		float: right;
+		font-size: 21px;
+		font-weight: bold;
+		line-height: 1;
+		color: #000;
+		text-shadow: 0 1px 0 #fff;
+		opacity: .2;
+		filter: alpha(opacity=20);
+		background: transparent;
+		border: 0;
+		padding: 0;
+		margin:0;
 	}
 }
 
@@ -1400,7 +1471,7 @@ input.no-canvas {
 		left: 0;
 		right: 0;
 		overflow: auto;
-		float:right;
+		overflow-x:hidden;
 		background: #f5f5f5;
 		h2 {
 			font-size: 12px;
@@ -1450,11 +1521,16 @@ input.no-canvas {
 					&:hover {
 						color: #777;
 					}
-					.lsf {
+					.lsf,
+					.mcf {
 						font-size: 28px;
 						line-height: 30px;
-						margin-right: 10px;
+						margin: 0;
 						font-weight: 200;
+					}
+					.mcf {
+						font-size: 22px;
+						line-height: 26px;
 					}
 				}
 				&.active {
@@ -1480,6 +1556,10 @@ input.no-canvas {
 						background: @blue;
 						&:hover {
 							color: #fff;
+						}
+						.mcf,
+						.lsf {
+							margin-right: 10px;
 						}
 					}
 				}
@@ -1509,6 +1589,24 @@ input.no-canvas {
 				margin: 0;
 				background: transparent;
 			}
+			.button-group {
+				display: table;
+				width: 100%;
+				.button-item {
+					display: table-cell;
+					width: 1%;
+					border-right: 1px solid #555;
+					&:last-child {
+						border-right: 0;
+					}
+					.button {
+						padding: 15px 20px;
+					}
+					.tip {
+						display: none;
+					}
+				}
+			}
 			.button {
 				display: block;
 				width: auto;
@@ -1520,13 +1618,29 @@ input.no-canvas {
 				background: #666;
 				border-bottom: 1px solid #555;
 				line-height: 22px;
-				&:hover {
+				font-size: 12px;
+				&.preview {
+					background: @blue;
+					&:hover {
+						background: @light-blue;
+					}
+				}
+				&:hover,
+				&.active {
 					background: #777;
 				}
-				.lsf {
+				.lsf,
+				.mcf {
 					font-size: 22px;
+					line-height: 22px;
 					display: inline-block;
 					margin: 5px 10px;
+				}
+				.tip {
+					font-size: 10px;
+					font-weight: 200;
+					display: block;
+					text-transform: none;
 				}
 			}
 			.count {
@@ -1596,7 +1710,7 @@ input.no-canvas {
 					.type {
 						color: @blue;
 						float: left;
-						font-size: 40px;
+						font-size: 25px;
 						padding: 20px 20px 20px 0;
 					}
 					.actions {
@@ -1617,6 +1731,21 @@ input.no-canvas {
 								cursor: move;
 							}
 						}
+					}
+				}
+			}
+			&.feature-style {
+				h3 {
+					background: #666;
+					padding: 15px 20px;
+					color: #f0f0f0;
+					font-size: 14px;
+					line-height: 14px;
+				}
+				.style-editor {
+					padding: 20px;
+					p {
+						margin: 0 0 20px;
 					}
 				}
 			}
@@ -1743,6 +1872,55 @@ input.no-canvas {
 				width: 100%;
 				box-sizing: border-box;
 			}
+			table {
+				width: 100%;
+				margin-bottom: 20px;
+				tr {
+					&:hover {
+						td input {
+							color: #333;
+						}
+					}
+					td {
+						padding: 10px;
+						border: 1px solid #eee;
+						input {
+							background: transparent;
+							border: 0;
+							color: #999;
+							&:focus,
+							&:hover {
+								color: #333;
+							}
+						}
+						&.action {
+							cursor: pointer;
+							text-align: center;
+							&.action-remove {
+								color: @red;
+							}
+							.lsf {
+								display: block;
+								margin: 0 auto;
+								font-size: 20px;
+								line-height: 24px;
+							}
+						}
+					}
+				}
+			}
+			.button {
+				font-size: 12px;
+				width: 100%;
+				display: block;
+				padding: 15px 0;
+				text-align: center;
+				background: @blue;
+				margin: 0 0 20px;
+				&:hover {
+					background: @light-blue;
+				}
+			}
 		}
 	}
 	.map-container {
@@ -1754,32 +1932,129 @@ input.no-canvas {
 			bottom: 0;
 			-webkit-transition: all cubic-bezier(0.250, 0.460, 0.450, 0.940) .2s;
 		}
-		.add-marker-tip {
-			display: none;
+		.start-tip {
+			display: block;
+			position: absolute;
+			top: 0;
+			padding-top: 15%;
+			box-sizing: border-box;
+			left: 0;
+			bottom: 0;
+			right: 0;
+			background: rgba(0,0,0,0.5);
+			pointer-events: none;
+			text-align: center;
+			color: #fff;
+			z-index: 100;
+			font-size: 20px;
+			font-weight: 600;
+			text-transform: uppercase;
+			text-shadow: 2px 2px 1px rgba(0,0,0,0.2);
+		}
+		.new-feature {
+			display: block;
+			position: absolute;
+			top: 0;
+			padding: 10% 0;
+			box-sizing: border-box;
+			left: 0;
+			bottom: 0;
+			right: 0;
+			background: rgba(0,0,0,0.7);
+			text-align: center;
+			color: #fff;
+			z-index: 100;
+			font-size: 18px;
+			font-weight: 200;
+			text-shadow: 2px 2px 1px rgba(0,0,0,0.2);
+			overflow: auto;
+			.available-types {
+				max-width: 600px;
+				margin: 0 auto;
+				padding: 0 10%;
+				text-align: left;
+				font-size: 14px;
+				.new-type {
+					ul {
+						width: 100%;
+						display: table;
+						text-align: center;
+						li {
+							width: 1%;
+							display: table-cell;
+							padding: 25px;
+							border-right: 1px solid @dark-blue;
+							background: @blue;
+							text-shadow: 0 0 0;
+							cursor: pointer;
+							&:hover {
+								background: @light-blue;
+							}
+							.mcf {
+								display: block;
+								font-size: 40px;
+								line-height: 40px;
+								margin-bottom: 20px;
+							}
+							&:last-child {
+								border-right: 0;
+							}
+						}
+					}
+				}
+				.geocode {
+					input {
+						border: 0;
+						padding: 15px;
+						width: 100%;
+						margin: 0;
+						font-size: 16px;
+						box-sizing: border-box;
+					}
+					.search-button {
+						width: 100%;
+						padding: 15px 0;
+						margin: 0;
+						text-align: center;
+						text-shadow: 0 0 0;
+						background: @light-blue;
+						&:hover {
+							background: @blue;
+						}
+						.lsf {
+							padding-right: 10px;
+							font-size: 18px;
+						}
+					}
+					.geocode-results {
+						background: #fff;
+						text-shadow: 0 0 0;
+						color: #333;
+						li {
+							font-size: 12px;
+							padding: 15px;
+							border-bottom: 1px solid #eee;
+							a {
+								float: left;
+								font-size: 20px;
+								margin: 0 10px 20px 0;
+								cursor: pointer;
+								text-decoration: none;
+								color: #999;
+								color: @blue;
+								&:hover {
+									color: @dark-blue;
+								}
+							}
+						}
+					}
+				}
+			}
 		}
 		&.editing {
 			.leaflet-container {
 				bottom: 60%;
 				-webkit-transition: all cubic-bezier(0.250, 0.460, 0.450, 0.940) .2s;
-			}
-			.add-marker-tip {
-				display: block;
-				position: absolute;
-				top: 0;
-				padding-top: 15%;
-				box-sizing: border-box;
-				left: 0;
-				bottom: 60%;
-				right: 0;
-				background: rgba(0,0,0,0.5);
-				pointer-events: none;
-				text-align: center;
-				color: #fff;
-				z-index: 100;
-				font-size: 20px;
-				font-weight: 600;
-				text-transform: uppercase;
-				text-shadow: 2px 2px 1px rgba(0,0,0,0.2);
 			}
 		}
 		#edit-feature {
@@ -1810,76 +2085,70 @@ input.no-canvas {
 			}
 			.feature-settings {
 				float: left;
-				width: 50%;
+				width: 50%;	
 				box-sizing: border-box;
 				padding: 20px;
-			}
-			.feature-location {
-				input {
-					background: transparent;
-					border: 0;
-					padding: 10px 0 28px;
-					width: 100%;
-					margin: 0;
+				.edit-title {
+					margin-bottom: 20px;
+					font-size: 22px;
+					line-height: 28px;
+				}
+				.edit-description {
 					font-size: 16px;
-				}
-				.search-button {
-					width: 100%;
-					padding: 10px 0;
-					margin: 0 0 20px;
-					text-align: center;
-					.lsf {
-						padding-right: 10px;
-						font-size: 18px;
-					}
-				}
-				.geocode-results {
-					li {
-						font-size: 12px;
-						.locate {
-							float: left;
-							font-size: 26px;
-							margin: 0 10px 20px 0;
-							cursor: pointer;
-							text-decoration: none;
-							color: #999;
-							&:hover {
-								color: #333;
-							}
-						}
-					}
+					line-height: 22px;
 				}
 			}
-			.editor-bottom {
-				.feature-actions {
-					float: right;
-					margin: -5px 0;
-					a {
-						float: left;
-						margin-left: 1px;
-					}
+		}
+	}
+	/*
+	 * Feature style
+	 */
+	.feature-style {
+		.label {
+			border-bottom: 1px solid #eee;
+			padding-bottom: 10px;
+		}
+		.colorpicker-container {
+			position: relative;
+		}
+		.colorpicker-box {
+			width: 100%;
+			height: 75px;
+			margin-bottom: 20px;
+			cursor: pointer;
+			border: 1px solid #eee;
+			box-sizing: border-box;
+		}
+		.ui-slider {
+			margin-bottom: 20px;
+		}
+		.size-picker {
+			display: table;
+			height: 90px;
+			margin: 0 auto;
+			span {
+				display: table-cell;
+				vertical-align: middle;
+				cursor: pointer;
+				padding: 0 20px;
+			}
+		}
+		.marker-icon {
+			li {
+				float: left;
+				margin: 0 5px 5px 0;
+			}
+			.maki-sprite {
+				background-image: url('/img/maki-sprite.png');
+				background-repeat: no-repeat;
+				display: inline-block;
+				width: 24px;
+				height: 24px;
+				&:hover {
+					background-color: #eee;
 				}
-				.latlng {
-					p {
-						float: left;
-						font-size: 12px;
-						text-transform: uppercase;
-						font-weight: 600;
-						margin: 0;
-						input {
-							width: 150px;
-							display: inline;
-							margin: 0;
-							background: transparent;
-							border: 0;
-							padding-left: 15px;
-							color: #bbb;
-							&:hover,
-							&:focus {
-								color: #f0f0f0;
-							}
-						}
-					}
+				&.blank {
+					background-image: none;
 				}
 			}
 		}
@@ -2145,22 +2414,23 @@ a.mapbox-improve-map {
 		pointer-events: none;
 		ul {
 			margin: 0;
+			border: 1px solid #999;
+			float: left;
 			li {
-				margin: 0 -1px 0 0;
 				float: left;
+				margin:0;
+				padding: 0;
 				a {
 					position: relative;
 					pointer-events: auto;
 					display: block;
-					background: @dark-blue;
-					border: 1px solid @blue;
+					background: #fff;
+					border-right: 1px solid rgba(0,0,0,0.10);
 					padding: 15px 20px;
-					color: #fff;
+					color: #333;
 					text-decoration: none;
 					&:hover {
-						background: #fff;
-						color: @blue;
-						border-color: @blue;
+						background: #f8f8f8;
 						z-index: 2;
 					}
 					.lsf {
@@ -2205,21 +2475,15 @@ a.mapbox-improve-map {
 				.leaflet-control {
 					box-shadow: none;
 					-webkit-box-shadow: none;
-					border-color: #333;
 					border-radius: 0;
 				}
 				.leaflet-bar a {
 					box-shadow: none;
 					-webkit-box-shadow: none;
-					background: #444;
-					border-color: #333;
-					color: #999;
 					border-radius: 0;
 					opacity: 1;
 					font-size: 18px;
 					&:hover {
-						background: #555;
-						color: #f0f0f0;
 					}
 				}
 			}
@@ -2537,7 +2801,7 @@ a.mapbox-improve-map {
 		top: 50%;
 		left: 50%;
 		width: 50%;
-		max-width: 550px;
+		max-width: 600px;
 		min-width: 330px;
 		height: auto;
 		max-height: 70%;
@@ -2600,6 +2864,12 @@ a.mapbox-improve-map {
 					display: block;
 					color: @green;
 				}
+			}
+			.tip {
+				display: block;
+				font-size: 10px;
+				margin-top: 10px;
+				color: #999;
 			}
 			&:hover {
 				color: #333;

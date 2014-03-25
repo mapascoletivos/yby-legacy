@@ -13,13 +13,14 @@ exports.LayerCtrl = [
 	'Page',
 	'Layer',
 	'Feature',
+	'Maki',
 	'Content',
 	'MessageService',
 	'SessionService',
 	'LoadingService',
 	'MapService',
 	'MapView',
-	function($scope, $rootScope, $location, $state, $stateParams, $q, Page, Layer, Feature, Content, Message, Session, Loading, MapService, MapView) {
+	function($scope, $rootScope, $location, $state, $stateParams, $q, Page, Layer, Feature, Maki, Content, Message, Session, Loading, MapService, MapView) {
 
 		$scope.$layer = Layer;
 		$scope.$feature = Feature;
@@ -27,44 +28,53 @@ exports.LayerCtrl = [
 
 		var mapFeatures;
 
-		var populateMap = function(features, layer, force) {
+		var populateMap = function(features, layer, force, focus) {
 
 			// Repopulate map if feature in scope has changed
 			if(!angular.equals(mapFeatures, features) || force === true) {
 
 				mapFeatures = angular.copy(features);
 
-				MapService.clearMarkers();
+				MapService.clearFeatures();
 
 				if(features) {
 
-					angular.forEach(features, function(f) {
+					angular.forEach(features, function(feature) {
 
-						var marker = require('../feature/featureToMapObjService')(f);
+						var f = angular.copy(feature);
+
+						var properties = angular.copy(layer.styles[f.geometry.type]);
+
+						_.extend(properties, f.properties || {});
+
+						f.properties = properties;
+
+						var marker = require('../feature/featureToMapObjService')(f, null, MapService.get());
 
 						if(marker) {
 
-							marker
-								.on('click', function() {
-									$rootScope.$broadcast('marker.clicked', f, layer);
-								})
-								.on('mouseover', function() {
-									marker.openPopup();
-								})
-								.on('mouseout', function() {
-									marker.closePopup();
-								})
-								.bindPopup('<h3 class="feature-title">' + f.title + '</h3>');
+							marker.on('click', function() {
+								$rootScope.$broadcast('marker.clicked', f, layer);
+							});
 
-							MapService.addMarker(marker);
+							MapService.addFeature(marker);
 
 						}
 
 					});
 				}
-			}
 
-			MapService.fitMarkerLayer();
+				if(focus !== false) {
+
+					window.dispatchEvent(new Event('resize'));
+					setTimeout(function() {
+						MapService.get().invalidateSize(false);
+						window.dispatchEvent(new Event('resize'));
+						MapService.fitFeatureLayer();
+					}, 300);
+				}
+
+			}
 
 		}
 
@@ -95,7 +105,37 @@ exports.LayerCtrl = [
 
 				origLayer = layer;
 
+				if(!layer.styles) {
+					layer.styles = {
+						Point: {
+							'marker-size': 'medium',
+							'marker-color': '#7e7e7e',
+							'marker-symbol': ''
+						},
+						Polygon: {
+							'stroke': '#555555',
+							'stroke-width': 2,
+							'stroke-opacity': 1,
+							'fill': '#555555',
+							'fill-opacity': 0.5
+						},
+						LineString: {
+							'stroke': '#555555',
+							'stroke-width': 2,
+							'stroke-opacity': 1
+						}
+					};
+				}
+
 				$scope.layer = angular.copy(layer);
+
+				$scope.$watch('layer.styles', function() {
+					Layer.edit($scope.layer); // trigger digest
+				});
+
+				$scope.previewLayer = function() {
+					populateMap($scope.layer.features, $scope.layer, true, false);
+				};
 
 				$scope.baseUrl = '/layers/' + layer._id;
 
@@ -135,15 +175,15 @@ exports.LayerCtrl = [
 						layer.contributors = [];
 
 					$scope.fitMarkerLayer = function() {
-						MapService.fitMarkerLayer();
+						MapService.fitFeatureLayer();
 					}
 
 					// Init features
-					Feature.set(angular.copy(layer.features));
-					populateMap(layer.features, layer, true);
+					Feature.set(angular.copy($scope.layer.features));
+					populateMap($scope.layer.features, $scope.layer, true);
 					
 					setTimeout(function() {
-						MapService.fitMarkerLayer();
+						MapService.fitFeatureLayer();
 					}, 200);
 
 					var viewingContent = false;
@@ -191,10 +231,6 @@ exports.LayerCtrl = [
 						window.dispatchEvent(new Event('resize'));
 					}, 100);
 
-					$scope.$on('layerObjectChange', function(event, active) {
-						populateMap(layer.features, layer, true);
-					});
-
 					if(!Layer.canEdit(layer)) {
 						$location.path('/layers/' + layer._id);
 						Message.add({
@@ -235,13 +271,18 @@ exports.LayerCtrl = [
 
 					Layer.edit(layer);
 
-					$scope.$watch('$feature.get()', function(features) {
-						$scope.layer.features = features;
+					$scope.$on('$destroy', function() {
+						Layer.edit(false);
 					});
+
+					var unHookFeaturesUpdate = $scope.$on('features.updated', function() {
+						$scope.layer.features = Feature.get();
+					});
+					$scope.$on('$destroy', unHookFeaturesUpdate);
 
 					$scope.$watch('$feature.edit()', function(editingFeature) {
 						if(!editingFeature)
-							populateMap(layer.features, layer, true);
+							populateMap($scope.layer.features, $scope.layer, true);
 					});
 
 					$scope.$watch('$content.get()', function(contents) {
@@ -257,7 +298,9 @@ exports.LayerCtrl = [
 						Page.setTitle(layer.title);
 						origLayer = layer;
 						$scope.layer = angular.copy(layer);
+						populateMap($scope.layer.features, $scope.layer, true, false);
 					});
+					
 					$scope.close = function() {
 
 						if(Layer.isDraft(layer)) {
@@ -267,6 +310,13 @@ exports.LayerCtrl = [
 						}
 
 					}
+
+					/*
+					 * Styles
+					 */
+
+					$scope.maki = Maki.maki;
+					$scope.makiSprite = Maki.makiSprite;
 
 				} else {
 
