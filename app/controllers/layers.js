@@ -93,11 +93,7 @@ exports.create = function (req, res) {
 		layer = new Layer(),
 		type = req.body.type;
 
-	if (!type) {
-
-		return res.json(400, { messages: [{status: 'error', text: 'Layer type missing.'}] })
-
-	} else if (type == 'TileLayer') {
+	if (type == 'TileLayer') {
 
 		layer.url = req.body.url;
 		layer.properties = req.body.properties;
@@ -110,7 +106,11 @@ exports.create = function (req, res) {
 		if(req.body.isDraft === false)
 			layer.isDraft = req.body.isDraft;
 
+	} else {
+		return res.json(400, { messages: [{status: 'error', text: 'Invalid or missing layer type.'}] })
 	}
+
+
 
 	layer.type = type;
 	layer.title = req.body.title;
@@ -174,46 +174,46 @@ exports.destroy = function(req, res){
  * Add a feature in layer
  */
 
-exports.addFeature = function (req, res) {
-	var 
-		feature = req.feature,
-		layer = req.layer;
+// exports.addFeature = function (req, res) {
+// 	var 
+// 		feature = req.feature,
+// 		layer = req.layer;
 
-	// associate layer to feature, if not already 
-	if ( ! _.contains(layer.features, feature._id) ) { 
-		layer.features.push(feature);
-	}
+// 	// associate layer to feature, if not already 
+// 	if ( ! _.contains(layer.features, feature._id) ) { 
+// 		layer.features.push(feature);
+// 	}
 
-	feature.save(function(err){
-		 if (err) res.json(400, utils.errorMessages(err.errors || err));
-		layer.save(function(err){
-			if (err) res.json(400,utils.errorMessages(err.errors || err))
-			else res.json(feature);
-		})
-	})
-}
+// 	feature.save(function(err){
+// 		 if (err) res.json(400, utils.errorMessages(err.errors || err));
+// 		layer.save(function(err){
+// 			if (err) res.json(400,utils.errorMessages(err.errors || err))
+// 			else res.json(feature);
+// 		})
+// 	})
+// }
 
 /**
  * Remove feature from layer
  */
 
-exports.removeFeature = function (req, res) {
-	var 
-		feature = req.feature,
-		layer = req.layer;
+// exports.removeFeature = function (req, res) {
+// 	var 
+// 		feature = req.feature,
+// 		layer = req.layer;
 
-	var saveLayer = function(err) {
-		if (err) res.json(400, utils.errorMessages(err.errors || err));
-		layer.features = _.filter(layer.features, function(f) { return !f._id.equals(feature._id); });
-		layer.save(function(err) {
-			if (err) res.json(400,utils.errorMessages(err.errors || err));
-			else res.json(feature);
-		})
-	}
+// 	var saveLayer = function(err) {
+// 		if (err) res.json(400, utils.errorMessages(err.errors || err));
+// 		layer.features = _.filter(layer.features, function(f) { return !f._id.equals(feature._id); });
+// 		layer.save(function(err) {
+// 			if (err) res.json(400,utils.errorMessages(err.errors || err));
+// 			else res.json(feature);
+// 		})
+// 	}
 
-	feature.remove(saveLayer);
+// 	feature.remove(saveLayer);
 
-}
+// }
 
 
 /**

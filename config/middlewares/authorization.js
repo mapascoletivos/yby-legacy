@@ -41,7 +41,7 @@ exports.feature = {
 		}
 
 		if (!req.layer) {
-			Layer.findById(req.query.layerId, function(err, layer){
+			Layer.findById(req.feature.layer, function(err, layer){
 				if (err) {
 					return res.json(403, {
 						messages: [{

@@ -20,7 +20,8 @@ describe('User controller', function() {
 				email: 'foobar@example.com',
 				name: 'Foo bar',
 				username: 'foobar',
-				password: 'foobar'
+				password: 'foobar',
+				needsEmailConfirmation: false
 			});
 			user.save(done);
 		});

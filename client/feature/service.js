@@ -37,7 +37,7 @@ exports.Feature = [
 				'delete': {
 					method: 'DELETE',
 					loadingMessage: 'Removendo local',
-					url: apiPrefix + '/layers/:layerId/features/:featureId'
+					url: apiPrefix + '/features/:featureId'
 				},
 				'update': {
 					method: 'PUT',

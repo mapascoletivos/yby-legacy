@@ -122,7 +122,7 @@ exports.destroy = function(req, res){
 	var 
 		content = req.content;
 
-	mongoose.model('Layer').findById(content.layer._id, function(err, layer){
+	mongoose.model('Layer').findById(content.layer, function(err, layer){
 		if (err) res.json(400, utils.errorMessages(err.errors || err));
 		else {
 

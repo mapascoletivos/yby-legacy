@@ -38,23 +38,33 @@ exports.load = function(req, res, next, id){
  */
 
 exports.create = function (req, res) {
-	var feature = new Feature(req.body);
-	feature.creator = req.user;
-	feature.layer = req.layer;
+
+	var 
+		feature = new Feature(req.body);
 	
-	// save feature
-	feature.save(function (err) {
-		if (err) {
-			res.json(400, utils.errorMessages(err.errors || err));
+	// Add feature to layer
+	mongoose.model('Layer').findById(req.body.layer, function(err, layer){
+		if (err) 
+			return res.json(400, { messages: [{ status: 'error', message: 'Error loading layer for feature creation.' }] });
+		else if (!layer) {
+			return res.json(400, { messages: [{ status: 'error', message: 'Layer not found.' }] });
 		} else {
-			var layer = feature.layer;
+			// Save new feature
 			layer.features.addToSet(feature);
-			
-			// save layer
 			layer.save(function(err){
-				if (err) res.json(400, utils.errorMessages(err.errors || err));
-				res.json(feature);
-			});
+				if (err) 
+					return res.json(400, { messages: [{ status: 'error', message: 'Error saving layer.' }] });
+				else {
+					feature.creator = req.user;
+					feature.layer = layer;
+					feature.save(function(err){
+						if (err) 
+							return res.json(400, { messages: [{ status: 'error', message: 'Error saving feature.' }] });
+						else
+							return res.json(feature);
+					})
+				}
+			})
 		}
 	});
 }
@@ -203,4 +213,32 @@ exports.removeContent = function(req, res){
 			else res.json({ messages: [{status: 'ok', text: 'Content removed successfully.'}] });
 		});
 	});
+}
+
+
+/**
+ * Remove feature
+ */
+
+exports.remove = function (req, res) {
+	var 
+		feature = req.feature;
+
+	feature.populate('layer', function(err){
+
+		layer = feature.layer;
+
+		layer.features.pull(feature);
+
+		layer.save(function(err){
+			if (err) 
+				return res.json({ messages: [{status: 'error', text: 'Error removing feature from layer.'}] });
+			feature.remove(function(err){
+				if (err) 
+					return res.json({ messages: [{status: 'error', text: 'Error removing feature.'}] });
+				else
+					return res.json({ messages: [{status: 'ok', text: 'Feature removed successfully.'}] });
+			})
+		})
+	})
 }

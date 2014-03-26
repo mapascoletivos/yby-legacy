@@ -14,6 +14,7 @@ var
  */
 
 var FeatureSchema = new Schema({
+	layer: { type: Schema.ObjectId, ref: 'Layer', required: true},
 	creator: { type: Schema.ObjectId, ref: 'User', required: true},
 	contents: [{ type: Schema.ObjectId, ref: 'Content'}],	
 	visibility: { type: String, enum: ['Public', 'Visible', 'Private'], default: 'Private'},

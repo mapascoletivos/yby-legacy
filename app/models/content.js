@@ -29,51 +29,61 @@ var ContentSchema = new Schema({
  * Hooks
  */
 
-// TODO add and remove images properly
+ContentSchema.pre('remove', function(next){
+	var self = this;
 
-// ContentSchema.pre('remove', function(next){
-// 	var self = this;
+	var removeAssociationFromFeatures = function(features, doneRemoveAssociationFromFeatures){
+		async.each(features, function(feature, doneRemove){
+			feature.contents.pull(self);
+			feature.save(doneRemove);
+		},doneRemoveAssociationFromFeatures)
+	}
 
-// 	async.parallel([
-// 		// remove related images
-// 		function(callback){
-// 			async.each(self.sirTrevorData, function(item, done){
-// 				if (item.type == 'image') {
-// 					mongoose.model('Image').findById(item.data._id, function(err,img){
-// 						if (err) done(err);
-// 						else {
-// 							// delete reference to this content to avoid circular execution
-// 							img.content = null;
-// 							img.save(function(err){
-// 								if (err) done(err);
-// 								else img.remove(function(err){
-// 									done();
-// 								});
-// 							});
-// 						}
-// 					});
-// 				}
-// 			}, callback);
-// 			// callback();
-// 		},
-// 		function(callback){
+	removeAssociationFromFeatures(self.features, next);
+
+	// async.parallel([
+	// 	// remove related images
+	// 	function(callback){
+	// 		async.each(self.sirTrevorData, function(item, done){
+	// 			if (item.type == 'image') {
+	// 				mongoose.model('Image').findById(item.data._id, function(err,img){
+	// 					if (err) done(err);
+	// 					else {
+	// 						// delete reference to this content to avoid circular execution
+	// 						img.content = null;
+	// 						img.save(function(err){
+	// 							if (err) done(err);
+	// 							else img.remove(function(err){
+	// 								done();
+	// 							});
+	// 						});
+	// 					}
+	// 				});
+	// 			}
+	// 		}, callback);
+	// 		// callback();
+	// 	},
+	// 	function(callback){
 			
-// 			// remove association from features
-// 			async.each(self.features, function(featureId, done){
-// 				mongoose.model('Feature').findById(featureId, function(err, feature){
-// 					if (err) next(err)
-// 					else {
-// 						feature.contents.pull(self._id);
-// 						feature.save(function(err){
-// 							done(err);
-// 						});
-// 					}
-// 				})
-// 			}, callback);
-// 		}
-// 	], next);
+	// 		// remove association from features
+	// 		async.each(self.features, function(featureId, done){
+	// 			mongoose.model('Feature').findById(featureId, function(err, feature){
+	// 				if (err) next(err)
+	// 				else {
+	// 					feature.contents.pull(self._id);
+	// 					feature.save(function(err){
+	// 						done(err);
+	// 					});
+	// 				}
+	// 			})
+	// 		}, callback);
+	// 	}
+	// ], next);
 
-// });
+});
+
+
+
 
 /**
  * Methods

@@ -33,7 +33,8 @@ describe('API', function(){
 						email: 'foobar@example.com',
 						name: 'Foo bar',
 						username: 'foobar',
-						password: 'foobar'
+						password: 'foobar',
+						needsEmailConfirmation: false
 					});
 					user.save(done);
 				});
@@ -59,14 +60,16 @@ describe('API', function(){
 				})
 			});
 			
-			context('When logged in', function(){
+			context('When logged in, ', function(){
 
 				var agent = request.agent(app);
 				
 				before(loginRegularUser(agent))
 				
-				describe('Invalid parameters', function(){
-					
+				describe('invalid', function(){
+				
+					var layerCount;
+
 					before(function(done){
 						Layer.count(function(err,cnt){
 							layerCount = cnt;
@@ -74,17 +77,32 @@ describe('API', function(){
 						})
 					})
 					
+					it('layer type', function(done){
+						agent
+							.post(apiPrefix + '/layers')
+							.field('title', 'A layer')
+							.expect('Content-Type', /json/)
+							.expect(400)
+							.expect(/Invalid or missing layer type./)
+							.end(done)
+					});	
+
 					it('should respond with error', function(done){
 						agent
 							.post(apiPrefix + '/layers')
-							.field('title', '')
+							.field('type', 'FeatureLayer')
 							.expect('Content-Type', /json/)
 							.expect(400)
 							.expect(/Path `title` is required./)
 							.end(done)
 					});
 					
-					it('should not save to database');
+					it('should not save to database', function(done){
+						Layer.count(function(err,cnt){
+							cnt.should.eql(layerCount);
+							done();
+						})
+					});
 				})
 				
 				describe('Valid parameters', function(){
@@ -99,17 +117,19 @@ describe('API', function(){
 	 * Content tests
 	 **/
 	
-	describe('Contents', function(){
+	describe(' - Contents', function(){
 		
 		// populate some content
 		before(function(done){
 			
 			var layer = new Layer({
 				creator: user,
-				title: 'Content test'
+				title: 'Content test',
+				type: 'FeatureLayer'
 			});
 			
 			var content = new Content({
+				creator: user,
 				type: 'Markdown',
 				title: 'Title of content',
 				layer: layer
@@ -121,7 +141,8 @@ describe('API', function(){
 			});
 			
 
-			layer.contents.push(content);
+			layer.contents.addToSet(content);
+			layer.features.addToSet(feature);
 
 			// save all
 			layer.save(function(err){
@@ -159,12 +180,12 @@ describe('API', function(){
 				
 				before(loginRegularUser(agent));
 				
-				it('should return true', function(done){
+				it('should return success message', function(done){
 					agent
 						.put(apiPrefix + '/features/' + featureId + '/contents/' + contentId)
 						.expect('Content-Type', /json/)
 						.expect(200)
-						.expect(/true/)
+						.expect(/Content added successfully./)
 						.end(done)
 				});
 				
@@ -180,11 +201,11 @@ describe('API', function(){
 			});
 		});
 		
-		describe('DEL ' + apiPrefix + '/features/:featureId/contents/:contentId', function(){
+		describe('DEL ' + apiPrefix + '/contents/:contentId', function(){
 			context('When not logged in', function(){
 				it('should redirect to /login', function (done) {
 					request(app)
-						.del(apiPrefix + '/features/' + featureId + '/contents/' + contentId )
+						.del(apiPrefix + '/contents/' + contentId )
 						.expect('Content-Type', /plain/)
 						.expect(302)
 						.expect('Location', '/login')
@@ -200,20 +221,22 @@ describe('API', function(){
 				
 				before(loginRegularUser(agent));
 				
-				it('should return true', function(done){
+				it('should return success message', function(done){
 					agent
-						.del(apiPrefix + '/features/' + featureId + '/contents/' + contentId)
+						.del(apiPrefix + '/contents/' + contentId)
 						.expect('Content-Type', /json/)
 						.expect(200)
-						.expect(/true/)
+						.expect(/Content removed successfully./)
 						.end(done)
 				});
 				
-				it('should have association in both sides', function(done){
+				it('should remove association in both sides', function(done){
 					Feature.findOne(featureId, function(err,ft){
+						should.not.exist(err);
 						ft.contents.should.not.include(contentId);
 						Content.findOne(contentId, function(err,ct){
-							ct.features.should.not.include(featureId);
+							should.not.exist(err);
+							should.not.exist(ct);
 							done();
 						});
 					})

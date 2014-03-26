@@ -223,6 +223,7 @@ exports.FeatureEditCtrl = [
 
 			$scope.$emit('feature.save.init', $scope.editing);
 
+
 			if($scope.editing && $scope.editing._id) {
 
 				Feature.resource.update({featureId: $scope.editing._id, layerId: layer._id}, $scope.editing, function(feature) {
@@ -249,6 +250,8 @@ exports.FeatureEditCtrl = [
 				});
 
 			} else {
+				
+				$scope.editing.layer = Layer.edit()._id;
 
 				var feature = new Feature.resource($scope.editing);
 
@@ -278,7 +281,7 @@ exports.FeatureEditCtrl = [
 
 			if(confirm('Você tem certeza que deseja remover esta feature?')) {
 
-				Feature.resource.delete({featureId: $scope.editing._id, layerId: layer._id}, function(res) {
+				Feature.resource.delete({featureId: $scope.editing._id}, function(res) {
 
 					Feature.set($scope.features.filter(function(f) {
 						return f._id !== $scope.editing._id;

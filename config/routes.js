@@ -114,6 +114,7 @@ module.exports = function (app, passport) {
 	app.post(apiPrefix + '/layers/:layerId/features', [auth.requiresLogin, auth.feature.canCreate], features.create);	
 	app.post(apiPrefix + '/layers/:layerId/features/import', [auth.requiresLogin, auth.feature.canCreate], features.import);
 	app.put(apiPrefix + '/features/:featureId', [auth.requiresLogin, auth.feature.canEditOrDelete], features.update);
+	app.del(apiPrefix + '/features/:featureId', [auth.requiresLogin, auth.feature.canEditOrDelete], features.remove);
 	
 	/** 
 	 * Content routes 
@@ -163,13 +164,9 @@ module.exports = function (app, passport) {
 	 * Association routes
 	 **/
 	
-	// layer x feature
-	app.put(apiPrefix + '/layers/:layerId/features/:featureId', [auth.requiresLogin, auth.feature.canEditOrDelete], layers.addFeature);
-	app.del(apiPrefix + '/layers/:layerId/features/:featureId', [auth.requiresLogin, auth.feature.canEditOrDelete], layers.removeFeature);
-	
 	// feature x content
-	app.put(apiPrefix + '/features/:featureId/contents/:contentId', auth.requiresLogin, features.addContent);
-	app.del(apiPrefix + '/features/:featureId/contents/:contentId', auth.requiresLogin, features.removeContent);
+	// app.put(apiPrefix + '/features/:featureId/contents/:contentId', auth.requiresLogin, features.addContent);
+	// app.del(apiPrefix + '/features/:featureId/contents/:contentId', auth.requiresLogin, features.removeContent);
 
 	app.get('/import', importMC.import);
 
