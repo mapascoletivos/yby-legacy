@@ -100,6 +100,14 @@ exports.UserCtrl = [
 				return false;
 			}
 
+			if(user.newEmail == user.email) {
+				Message.message({
+					status: 'error',
+					text: 'Este já é seu email.'
+				});
+				return false;
+			}
+
 			User.resource.update({userId: user._id}, {
 				email: user.newEmail
 			});
