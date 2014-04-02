@@ -82,7 +82,7 @@ module.exports = function (passport, config) {
 
 
 						// User have to migrate first
-						if (user.status == 'to_migrate') {
+						if (user && user.status == 'to_migrate') {
 							return done(null, false, { message: "Sua conta não foi migrada ainda. Visite esta <a href='/migrate' target='_self'>página</a>." });
 						}							
 
@@ -134,7 +134,7 @@ module.exports = function (passport, config) {
 						if (err) { return done(err) }
 
 						// User have to migrate first
-						if (user.status == 'to_migrate') {
+						if (user && user.status == 'to_migrate') {
 							return done(null, false, { message: "Sua conta não foi migrada ainda. Visite esta <a href='/migrate' target='_self'>página</a>." });
 						}
 
