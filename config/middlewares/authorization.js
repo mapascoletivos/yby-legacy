@@ -34,11 +34,16 @@ exports.requiresLogin = function (req, res, next) {
 
 	})(req, res, next);
 
-	// if (req.isAuthenticated()) return next()
-
-	// if (req.method == 'GET') req.session.returnTo = req.originalUrl
-	// res.redirect('/login')
 }
+
+exports.isAdmin = function (req, res, next) {
+	if (!user) {
+		return res.forbidden('Not an admin.');
+	} else {
+		return next();
+	}
+}
+
 
 /*
  *  Feature authorization 

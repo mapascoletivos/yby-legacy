@@ -52,7 +52,6 @@ FeatureSchema.index({ loc: '2dsphere' })
 				next();	
 			} 
 	 		else {
-				delete self.address
 				self.address = areas;
 				next();
 	 		}

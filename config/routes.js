@@ -19,6 +19,7 @@ var
 	features = require('features'),
 	contents = require('contents'),
 	images = require('images'),
+	admin = require('admin'),
 	auth = require('./middlewares/authorization');
 
 /**
@@ -141,6 +142,13 @@ module.exports = function (app, passport) {
 	// feature x content
 	app.put(apiPrefix + '/features/:featureId/contents/:contentId', auth.requiresLogin, features.addContent);
 	app.del(apiPrefix + '/features/:featureId/contents/:contentId', auth.requiresLogin, features.removeContent);
+
+	/** 
+	 * Admin routes 
+	 **/
+	app.get('/admin/login', admin.login);
+	app.get('/admin/register', admin.register);	
+	app.get('/admin', [auth.requiresLogin, auth.isAdmin], admin.index);	
 
 	/*
 	 * All other routes enabled for Angular app (no 404)
