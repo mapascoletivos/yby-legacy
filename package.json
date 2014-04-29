@@ -33,7 +33,7 @@
 	"dependencies": {
 		"dotenv": "latest",
 		"moment": "latest",
-		"express": "latest",
+		"express": "3.x",
 		"express-namespace": "latest",
 		"mysql": "latest",
 		"mongoose": "latest",
@@ -71,6 +71,7 @@
 		"jquery-ui-browserify": "latest",
 		"markdown": "latest",
 		"grvtr": "latest",
+		"eventablejs": "latest",
 		"napa": "latest",
 		"browserify": "latest",
 		"uglify-js": "latest"
@@ -85,7 +86,6 @@
 	},
 	"napa": {
 		"angular": "angular/bower-angular",
-		"angular-route": "angular/bower-angular-route",
 		"angular-sanitize": "angular/bower-angular-sanitize",
 		"angular-resource": "angular/bower-angular-resource",
 		"angular-animate": "angular/bower-angular-animate",
@@ -97,7 +97,6 @@
 		"angular-ui-slider": "angular-ui/ui-slider",
 		"angular-modal": "miguelpeixe/angular-modal",
 		"ngInfiniteScroll": "BinaryMuse/ngInfiniteScroll-bower",
-		"eventable": "madebymany/eventable",
 		"sir-trevor": "madebymany/sir-trevor-js",
 		"bootstrap-colorpicker": "buberdds/angular-bootstrap-colorpicker"
 	},

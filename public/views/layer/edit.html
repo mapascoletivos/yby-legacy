@@ -16,42 +16,50 @@
 					<div id="layer-edit">
 						<ul class="map-editor-tabs layer-objects-nav">
 							<li ng-class="layerObj('settings')" ng-show="isOwner(layer)" ng-click="setLayerObj('settings')">
-								<a title="Configurações" href="javascript:void(0);">
-									<span class="lsf">&#xE055;</span>
-									<span class="label" ng-show="layerObj('settings')">
-										Configurações
-									</span>
-								</a>
+								<div class="tab-content">
+									<a title="Configurações" href="javascript:void(0);">
+										<span class="lsf">&#xE055;</span>
+										<span class="label" ng-show="layerObj('settings')">
+											Configurações
+										</span>
+									</a>
+								</div>
 							</li>
 							<li ng-class="layerObj('feature')" ng-click="setLayerObj('feature')">
-								<a title="Locais" href="javascript:void(0);">
-									<span class="mcf">&#xe600;</span>
-									<span class="label" ng-show="layerObj('feature')">
-										Locais
-									</span>
-									<span class="feature-length tab-tip" ng-show="layer.features.length">
-										{{layer.features.length}}
-									</span>
-								</a>
+								<div class="tab-content">
+									<a title="Locais" href="javascript:void(0);">
+										<span class="mcf">&#xe600;</span>
+										<span class="label" ng-show="layerObj('feature')">
+											Locais
+										</span>
+										<span class="feature-length tab-tip" ng-show="layer.features.length">
+											{{layer.features.length}}
+										</span>
+									</a>
+								</div>
 							</li>
 							<li ng-class="layerObj('content')" ng-click="setLayerObj('content')">
-								<a title="Conteúdo" href="javascript:void(0);">
-									<span class="lsf">&#xE101;</span>
-									<span class="label" ng-show="layerObj('content')">
-										Conteúdo
-									</span>
-									<span class="content-length tab-tip" ng-show="layer.contents.length">
-										{{layer.contents.length}}
-									</span>
-								</a>
+								<div class="tab-content">
+									<a title="Conteúdo" href="javascript:void(0);">
+										<span class="lsf">&#xE101;</span>
+										<span class="label" ng-show="layerObj('content')">
+											Conteúdo
+										</span>
+										<span class="content-length tab-tip" ng-show="layer.contents.length">
+											{{layer.contents.length}}
+										</span>
+									</a>
+								</div>
 							</li>
 							<li ng-class="layerObj('styles')" ng-show="isOwner(layer)" ng-click="setLayerObj('styles')">
-								<a title="Configurações" href="javascript:void(0);">
-									<span class="lsf">&#xE033;</span>
-									<span class="label" ng-show="layerObj('styles')">
-										Estilos
-									</span>
-								</a>
+								<div class="tab-content">
+									<a title="Configurações" href="javascript:void(0);">
+										<span class="lsf">&#xE033;</span>
+										<span class="label" ng-show="layerObj('styles')">
+											Estilos
+										</span>
+									</a>
+								</div>
 							</li>
 						</ul>
 						<div ng-show="layerObj('settings') && isOwner(layer)">

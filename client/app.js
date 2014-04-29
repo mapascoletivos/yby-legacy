@@ -49,7 +49,6 @@ angular.module('mapasColetivos', [
 	'ui.keypress',
 	'ui.slider',
 	'monospaced.elastic',
-	'ngRoute',
 	'ngAnimate',
 	'infinite-scroll',
 	'colorpicker.module',

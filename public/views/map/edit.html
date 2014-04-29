@@ -10,31 +10,37 @@
 					<div id="map-edit">
 						<ul class="map-editor-tabs layer-objects-nav">
 							<li ng-class="mapObj('settings')" ng-click="setMapObj('settings')">
-								<a title="Configurações" href="javascript:void(0);">
-									<span class="lsf">&#xE055;</span>
-									<span class="label" ng-show="mapObj('settings')">
-										Configurações
-									</span>
-								</a>
+								<div class="tab-content">
+									<a title="Configurações" href="javascript:void(0);">
+										<span class="lsf">&#xE055;</span>
+										<span class="label" ng-show="mapObj('settings')">
+											Configurações
+										</span>
+									</a>
+								</div>
 							</li>
 							<li ng-class="mapObj('layer')" ng-click="setMapObj('layer')">
-								<a title="Camadas" href="javascript:void(0);">
-									<span class="lsf">&#xE129;</span>
-									<span class="label" ng-show="mapObj('layer')">
-										Camadas
-									</span>
-									<span class="layer-length tab-tip" ng-show="map.layers.length">
-										{{map.layers.length}}
-									</span>
-								</a>
+								<div class="tab-content">
+									<a title="Camadas" href="javascript:void(0);">
+										<span class="lsf">&#xE129;</span>
+										<span class="label" ng-show="mapObj('layer')">
+											Camadas
+										</span>
+										<span class="layer-length tab-tip" ng-show="map.layers.length">
+											{{map.layers.length}}
+										</span>
+									</a>
+								</div>
 							</li>
 							<li ng-class="mapObj('mapOptions')" ng-click="setMapObj('mapOptions')">
-								<a title="Opções do mapa" href="javascript:void(0);">
-									<span class="lsf">&#xE08b;</span>
-									<span class="label" ng-show="mapObj('mapOptions')">
-										Opções do mapa
-									</span>
-								</a>
+								<div class="tab-content">
+									<a title="Opções do mapa" href="javascript:void(0);">
+										<span class="lsf">&#xE08b;</span>
+										<span class="label" ng-show="mapObj('mapOptions')">
+											Opções do mapa
+										</span>
+									</a>
+								</div>
 							</li>
 						</ul>
 						<div ng-show="mapObj('settings')" ng-controller="MapActionsCtrl">
@@ -108,35 +114,45 @@
 									<tr>
 										<th>Centro</th>
 										<td>
-											<input type="text" ng-model="map.center" disabled />
-											<a class="lsf auto-input" href="javascript:void(0);" ng-click="autoInput.center()" title="Utilizar centro atual">&#xE038;</a>
+											<div class="relative-input">
+												<input type="text" ng-model="map.center" disabled />
+												<a class="lsf auto-input" href="javascript:void(0);" ng-click="autoInput.center()" title="Utilizar centro atual">&#xE038;</a>
+											</div>
 										</td>
 									</tr>
 									<tr>
 										<th>Zoom</th>
 										<td>
-											<input type="number" ng-model="map.zoom" />
-											<a class="lsf auto-input" href="javascript:void(0);" ng-click="autoInput.zoom()" title="Utilizar zoom atual">&#xE038;</a>
+											<div class="relative-input">
+												<input type="number" ng-model="map.zoom" />
+												<a class="lsf auto-input" href="javascript:void(0);" ng-click="autoInput.zoom()" title="Utilizar zoom atual">&#xE038;</a>
+											</div>
 										</td>
 									</tr>
 									<tr>
 										<th>Limites de navegação</th>
 										<td>
-											<input type="text" ng-model="map.bounds" disabled />
-											<a class="lsf auto-input" href="javascript:void(0);" ng-click="autoInput.bounds()" title="Utilizar visualização atual">&#xE038;</a>
+											<div class="relative-input">
+												<input type="text" ng-model="map.bounds" disabled />
+												<a class="lsf auto-input" href="javascript:void(0);" ng-click="autoInput.bounds()" title="Utilizar visualização atual">&#xE038;</a>
+											</div>
 										</td>
 									<tr>
 										<th>Zoom máximo</th>
 										<td>
-											<input type="text" ng-model="map.maxZoom" />
-											<a class="lsf auto-input" href="javascript:void(0);" ng-click="autoInput.maxZoom()" title="Utilizar zoom atual">&#xE038;</a>
+											<div class="relative-input">
+												<input type="text" ng-model="map.maxZoom" />
+												<a class="lsf auto-input" href="javascript:void(0);" ng-click="autoInput.maxZoom()" title="Utilizar zoom atual">&#xE038;</a>
+											</div>
 										</td>
 									</tr>
 									<tr>
 										<th>Zoom mínimo</th>
 										<td>
-											<input type="text" ng-model="map.minZoom" />
-											<a class="lsf auto-input" href="javascript:void(0);" ng-click="autoInput.minZoom()" title="Utilizar zoom atual">&#xE038;</a>
+											<div class="relative-input">
+												<input type="text" ng-model="map.minZoom" />
+												<a class="lsf auto-input" href="javascript:void(0);" ng-click="autoInput.minZoom()" title="Utilizar zoom atual">&#xE038;</a>
+											</div>
 										</td>
 									</tr>
 								</table>

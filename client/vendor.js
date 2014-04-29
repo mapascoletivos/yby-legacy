@@ -3,9 +3,9 @@ window._ = require('underscore');
 window.L = require('leaflet');
 window.grvtr = require('grvtr');
 window.markdown = require("markdown").markdown;
+window.Eventable = require('eventablejs');
 
 require('angular/angular');
-require('angular-route/angular-route');
 require('angular-elastic/elastic');
 require('angular-ui-router/release/angular-ui-router');
 require('angular-ui-utils/modules/keypress/keypress');
@@ -23,6 +23,5 @@ require('leaflet-draw');
 
 require('jquery-ui-browserify');
 require('ngInfiniteScroll/ng-infinite-scroll');
-require('eventable/eventable');
 require('sir-trevor/sir-trevor.min');
 require('bootstrap-colorpicker/js/bootstrap-colorpicker-module');
