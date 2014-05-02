@@ -1,7 +1,7 @@
 doctype html
 html.landing
 	include ../includes/head
-	body
+	body.home
 		header#mast-header
 			.container
 				.five.columns
@@ -68,6 +68,10 @@ html.landing
 										h3
 											a(href="#{project.url}" title="#{project.title}") #{project.title}
 										p #{project.description}
-
+		script(src="/js/jquery-1.11.0.min.js")
+		script.
+			$(document).ready(function(){
+				(function(a){a(document).ready(function(){if(!a("body").length){console.log(a);return false;}var b=a('<div class="gic-bannera"></div>').css({position:"fixed",top:0,left:0,right:0,bottom:0,"z-index":"999999",background:"rgba(0,0,0,0.4)"});a(document).bind("keyup",function(g){if(g.which==27){b.remove()}});var f=a('<div class="gic-close" />').css({position:"absolute",top:0,bottom:0,right:0,left:0,"z-index":"1",cursor:"pointer"}).bind("click",function(){b.remove()});b.append(f);var d=a('<div class="gic-banner-container" />').css({position:"absolute",top:"10%",left:"10%",right:"10%","z-index":2}).bind("click",function(){b.remove()});b.append(d);var e=a('<a href="http://goo.gl/kdV4CS" target="_blank" />');d.append(e);var c=a('<img src="http://infoamazonia.org/wp-content/uploads/2014/04/finalistas.jpg" />').css({width:"100%",height:"auto"});e.append(c);a("body").append(b)})})(jQuery);
+			})
 
 		include ../includes/footer
