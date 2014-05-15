@@ -10,8 +10,8 @@ var
 	app_url = process.env.APP_URL || ('http://localhost:' + (process.env.PORT || 3000)),
 	nodemailer = {
 		host: process.env.SMTP_HOST,
-		port: 465,
-		secureConnection: true,
+		port: parseInt(process.env.SMTP_PORT) || 25,
+		secureConnection: process.env.SMTP_SSL == 'true' ? true : false,
 		requiresAuth: true,
 		auth: {
 				user: process.env.SMTP_USER,
