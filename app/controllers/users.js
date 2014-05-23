@@ -203,9 +203,9 @@ exports.create = function (req, res) {
 	user.provider = 'local';
 
 	// Avoid e-mail confirmation at development environment
-	if (process.env.NODE_ENV == 'development') {
+	// if (process.env.NODE_ENV == 'development') {
 		user.needsEmailConfirmation = false;
-	}
+	// }
 
 
 	user.save(function (err) {
