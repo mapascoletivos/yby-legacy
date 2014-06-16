@@ -1,0 +1,19 @@
+#mast-header h1,
+.landing #mast-header h1 {
+	line-height: 0px;
+	text-indent: -9999px;
+}
+
+.landing #mast-header h1 {
+	margin-top: 10px;
+}
+
+#mast-header h1 img {
+	display: block;
+	width:  180px;
+	height: auto;
+}
+
+.landing #mast-header h1 img {
+	width: 100%;
+}
