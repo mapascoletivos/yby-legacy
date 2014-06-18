@@ -24,7 +24,7 @@ Mapas Coletivos is collaborative mapped narratives platform built on top of [YBY
 		{
 			path: '/about/',
 			template: '/views/pages/about.html',
-			title: 'About'
+			title: 'Sobre'
 		}
 	]
 ```
