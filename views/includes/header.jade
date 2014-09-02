@@ -7,6 +7,8 @@ header#mast-header
 				.eight.columns
 					ul#mast-nav(ng-controller='LoginCtrl')
 						li
+							a(href='/ajuda', title='Ajuda', data-uv-trigger, translate) Ajuda
+						li
 							a(href='/explore', title='Explorar', translate) Explore
 						li(ng-show='isAuthenticated')
 							a(href='/dashboard', title='{{\'Dashboard\' | translate}}')

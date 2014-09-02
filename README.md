@@ -7,7 +7,7 @@ Mapas Coletivos is collaborative mapped narratives platform built on top of [YBY
  - Run a [YBY server](http://github.com/oeco/yby);
  - Clone and install a [YBY client](http://github.com/oeco/yby-client) following it's installation process;
  - Clone this repository inside a directory called `themes`, on your yby client root;
- - Add this properties to your config.js 
+ - Add this properties to your `app/config.js` 
 ```
    	theme: 'mapascoletivos',
 	pages: [
