@@ -1,3 +1,5 @@
+**NOTICE: This repository is deprecated. Please visit current [server](https://github.com/mapascoletivos/yby) and [client](https://github.com/mapascoletivos/yby-client) repositories.**
+
 # Mapas Coletivos
 
 Mapas Coletivos is collaborative mapped narratives platform built on top of [YBY](http://github.com/oeco/yby) and [YBY Client](http://github.com/oeco/yby-client).
