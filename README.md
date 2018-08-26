@@ -1,4 +1,4 @@
-**NOTICE: This repository is deprecated. Please visit current [server](https://github.com/mapascoletivos/yby) and [client](https://github.com/mapascoletivos/yby-client) repositories.**
+**NOTICE: This repository is deprecated. It contains the early versions of Mapas Coletivos - once called Yby - and is kept here for historical purposes. Please visit current [api-service](https://github.com/mapascoletivos/api-service) and [webapp](https://github.com/mapascoletivos/webapp) repositories.**
 
 # Mapas Coletivos
 
